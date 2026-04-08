@@ -27,12 +27,25 @@ public class OtpService {
         String otp = generateOtp();
         otpStorage.put(email, otp);
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("SecureVote OTP Verification");
-        message.setText("Your OTP for SecureVote login is: " + otp);
+        try {
+            System.out.println("=== OTP SERVICE START ===");
+            System.out.println("Sending OTP to: " + email);
+            System.out.println("Generated OTP: " + otp);
 
-        mailSender.send(message);
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("raghavsoundararajan@gmail.com");
+            message.setTo(email);
+            message.setSubject("SecureVote OTP Verification");
+            message.setText("Your OTP for SecureVote login is: " + otp);
+
+            mailSender.send(message);
+
+            System.out.println("Mail sent successfully");
+            System.out.println("=== OTP SERVICE END ===");
+        } catch (Exception e) {
+            System.out.println("Mail send failed: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public boolean verifyOtp(String email, String otp) {
